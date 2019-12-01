@@ -1,26 +1,56 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {useState, useEffect} from 'react';
+import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
+import styled from 'styled-components';
 
-function App() {
+import Header from './components/header';
+
+import Start from './pages/StartView';
+import Produkter from './pages/ProdukterView';
+import Tjänster from './pages/TjänsterView';
+
+const App = () => {
+
+  useEffect(async() => {
+
+    let data = await fetch("http://simplebusiness.se/wp-json/wp/v2/posts");
+    data = await data.json();
+    console.log(data);
+    // Update the document title using the browser API
+    //document.title = `You clicked ${count} times`;
+  });
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <WebContainer>
+      <Container>
+
+        <Header />
+
+        <Router>
+          <Switch>
+            <Route exact path="/Start" component={Start}/>
+            <Route path="/Produkter" component={Produkter}/>
+            <Route path="/Tjänster" component={Tjänster}/>
+          </Switch>
+        </Router>
+
+      </Container>
+    </WebContainer>
   );
 }
+
+const WebContainer = styled.div`
+  margin: 0;
+  box-sizing: border-box;
+  background-color: #f2f2f2;
+  padding: 10px;
+`;
+
+const Container = styled.div`
+  background-color: #fff;
+  margin: auto;
+  width: 95%;
+  height: auto;
+  padding: 15px;
+`;
 
 export default App;
